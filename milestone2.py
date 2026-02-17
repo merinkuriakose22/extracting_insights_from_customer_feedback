@@ -13,7 +13,6 @@ def get_sentiment(text):
     Analyzes text to return sentiment label and polarity score.
     """
     try:
-        # Fixed: Corrected attribute name from 'polarily' to 'polarity'
         analysis = TextBlob(str(text))
         score = analysis.sentiment.polarity
         
@@ -28,31 +27,31 @@ def get_sentiment(text):
         return "neutral", 0.0
 
 def main():
-    # 1. Path Setup (Using your established working directory)
+    # 1. Path Setup
     input_file = "Milestone1_cleaned_feedback.csv"
     output_file = "Milestone2_Sentiment_Results_new.csv"
     chart_file = "sentiment_bar_chart.png"
 
     # 2. Data Ingestion
     if not os.path.exists(input_file):
-        print(f"❌ Error: {input_file} not found. Ensure Milestone 1 has been run.")
+        print(f" Error: {input_file} not found. Ensure Milestone 1 has been run.")
         return
 
-    print("📂 Loading cleaned feedback data...")
+    print(" Loading cleaned feedback data...")
     df = pd.read_csv(input_file)
 
     # 3. Sentiment Processing
-    print("🧠 Analyzing sentiment across 5000 records...")
+    print(" Analyzing sentiment across 5000 records...")
     # Applies sentiment logic and maps results to two new columns
     results = df["clean_feedback"].apply(lambda x: pd.Series(get_sentiment(x)))
     df[["sentiment", "confidence_score"]] = results
 
     # 4. Save Processed Dataset
     df.to_csv(output_file, index=False)
-    print(f"✅ Milestone 2 results saved to: {output_file}")
+    print(f" Milestone 2 results saved to: {output_file}")
 
     # 5. Data Visualization
-    print("📊 Generating sentiment distribution chart...")
+    print(" Generating sentiment distribution chart...")
     sentiment_counts = df['sentiment'].value_counts()
     
     plt.figure(figsize=(8, 5))
@@ -70,13 +69,14 @@ def main():
 
     plt.tight_layout()
     plt.savefig(chart_file, dpi=100)
-    print(f"🖼️  Chart saved successfully as: {chart_file}")
+    print(f"  Chart saved successfully as: {chart_file}")
 
-    # 6. Final Report for Presentation
+    # 6. Final Report 
     print("\n--- Project Summary for Week 2 ---")
     print(df['sentiment'].value_counts())
     print("\nSample Output:")
     print(df[["clean_feedback", "sentiment", "confidence_score"]].head())
 
 if __name__ == "__main__":
+
     main()
